@@ -1,0 +1,162 @@
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  margin: 0;
+}
+
+/* NAVBAR */
+.navbar {
+  background: #ffffff;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #e84949;
+}
+
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* USER DROPDOWN */
+.user-box {
+  position: absolute;
+  top: 56px;
+  right: 24px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  width: 230px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  display: none;
+  font-size: 14px;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 8px;
+  background: #e84949;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* WISHLIST */
+.wishlist-box {
+  padding: 20px 24px;
+}
+
+.wishlist-box h2 {
+  margin-bottom: 10px;
+}
+
+/* BOOK GRID */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.12);
+}
+
+.book-card img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.book-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.book-author {
+  color: #555;
+  font-size: 14px;
+}
+
+.book-meta,
+.book-desc,
+.book-copies {
+  font-size: 13px;
+  color: #666;
+}
+
+.book-price {
+  color: #e84949;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+.remove-btn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 8px;
+  background: #e84949;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.order-btn {
+  margin-top: 6px;
+  width: 100%;
+  padding: 8px;
+  background: #1f7a1f; /* green */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* FOOTER */
+.footer {
+  background: #ffffff;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  font-size: 13px;
+}
+
+.wishlist-actions {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 15px;
+}
+
+.order-all-btn, .order-selected-btn {
+  padding: 10px 16px;
+  background: #e84949;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}

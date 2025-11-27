@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Place Order</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f5f5;
+      margin: 0;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: #fff;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
+
+    .logo {
+      color: #e84949;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .user-box {
+      position: absolute;
+      top: 56px;
+      right: 24px;
+      background: white;
+      padding: 14px;
+      border-radius: 10px;
+      width: 240px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+      display: none;
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 8px;
+      background: #e84949;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    /* ORDER CONTAINER */
+    .order-container {
+      padding: 24px;
+      padding-bottom: 100px;
+    }
+
+    h2 {
+      color: #e84949;
+      margin-top: 20px;
+    }
+
+    label {
+      margin-top: 12px;
+      display: block;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .payment-options label {
+      display: block;
+      margin-top: 8px;
+      font-size: 15px;
+    }
+
+    /* UPI BOX */
+    .upi-box {
+      margin-top: 12px;
+      background: #fff7f7;
+      border-left: 4px solid #e84949;
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+
+    .upi-id-text { margin-bottom: 6px; }
+    .upi-id { font-weight: bold; color: #e84949; }
+
+    .upi-qr {
+      width: 160px;
+      height: 160px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    /* Fake Razorpay Payment Window */
+    .razorpay-box {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #ffffff;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .progress-text {
+      font-size: 15px;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #e84949;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin: auto;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .success-msg {
+      display: none;
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 16px;
+      color: #0A8A0A;
+      border-left: 5px solid #0A8A0A;
+      background: #EBFFEB;
+      border-radius: 8px;
+    }
+
+    .order-items {
+      margin-top: 16px;
+      background: #fff;
+      padding: 14px;
+      border-radius: 10px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    }
+
+    .place-btn {
+      background: #e84949;
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    /* FOOTER */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      text-align: center;
+      font-size: 13px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Place Order 🧾</div>
+
+  <div class="user-area">
+    <span id="userNameText"></span>
+    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+         class="user-icon" onclick="toggleUserBox()">
+  </div>
+
+  <div id="userBox" class="user-box">
+    <p><strong>Name:</strong> <span id="uName"></span></p>
+    <p><strong>Email:</strong> <span id="uEmail"></span></p>
+    <p><strong>Address:</strong> <span id="uAddress"></span></p>
+    <p><strong>Phone:</strong> <span id="uPhone"></span></p>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </div>
+</header>
+
+<section class="order-container">
+
+  <h2>Delivery Details</h2>
+
+  <label>Full Name</label>
+  <input type="text" id="fullname">
+
+  <label>Address</label>
+  <textarea id="address" rows="3"></textarea>
+
+  <label>Phone Number</label>
+  <input type="text" id="phone">
+
+  <h2>Payment Method</h2>
+  <div class="payment-options">
+    <label><input type="radio" name="payment" value="Cash on Delivery"> Cash on Delivery</label>
+    <label><input type="radio" name="payment" value="UPI"> UPI</label>
+  </div>
+
+  <!-- UPI BOX -->
+  <div id="upiBox" class="upi-box" style="display:none;">
+    <div class="upi-id-text">UPI ID:</div>
+    <div class="upi-id">6304951068@ibl</div>
+
+    <img class="upi-qr"
+        src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=6304951068@ibl&pn=Book%20Store">
+
+    <label style="margin-top:12px;">Enter UPI Transaction ID</label>
+    <input type="text" id="txnId" placeholder="EX: T2025XXXXXXXX">
+  </div>
+
+  <!-- Fake Razorpay Box -->
+  <div id="razorpayBox" class="razorpay-box">
+    <div class="loader"></div>
+    <div id="progressText" class="progress-text">Opening Razorpay…</div>
+
+    <div id="successMsg" class="success-msg">
+      ✔ Payment Successful through Razorpay UPI
+    </div>
+  </div>
+
+  <h2>Your Items</h2>
+  <div id="orderItems" class="order-items"></div>
+
+  <button class="place-btn" onclick="startPayment()">Proceed to Pay</button>
+
+</section>
+
+
+<footer class="footer">
+  © 2025 Book Store. All rights reserved.
+</footer>
+
+<script>
+  // USER LOGIN CHECK
+  let logged = localStorage.getItem("loggedIn");
+  let user = JSON.parse(localStorage.getItem("user"));
+  if (!logged || !user) window.location.href = "login.html";
+
+  document.getElementById("userNameText").innerText = user.username;
+  document.getElementById("uName").innerText = user.username;
+  document.getElementById("uEmail").innerText = user.email;
+  document.getElementById("uAddress").innerText = user.address;
+  document.getElementById("uPhone").innerText = user.phone;
+
+  // Autofill
+  document.getElementById("fullname").value = user.username;
+  document.getElementById("address").value = user.address;
+  document.getElementById("phone").value = user.phone;
+
+  // Toggle user box
+  function toggleUserBox() {
+    let box = document.getElementById("userBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+  }
+
+  function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+  }
+
+  // UPI show/hide
+  const radios = document.querySelectorAll("input[name='payment']");
+  radios.forEach(r => {
+    r.addEventListener("change", () => {
+      document.getElementById("upiBox").style.display =
+        r.value === "UPI" ? "block" : "none";
+    });
+  });
+
+  // Load order items
+  let orderList = JSON.parse(localStorage.getItem("orderNow")) || [];
+  let orderItemsDiv = document.getElementById("orderItems");
+  if (orderList.length === 0) {
+    orderItemsDiv.innerHTML = "<p>No items to order.</p>";
+  } else {
+    orderList.forEach(book => {
+      orderItemsDiv.innerHTML += `
+        <div class="order-card">
+          <strong>${book.title}</strong><br>
+          By ${book.author}<br>
+          ₹${book.price}
+        </div>
+      `;
+    });
+  }
+
+  // START PAYMENT – Fake Razorpay Gateway
+  function startPayment() {
+    let fullname = document.getElementById("fullname").value;
+    let address = document.getElementById("address").value;
+    let phone = document.getElementById("phone").value;
+    let payment = document.querySelector("input[name='payment']:checked");
+
+    if (!fullname || !address || !phone || !payment) {
+      alert("Fill all fields");
+      return;
+    }
+
+    if (payment.value === "UPI") {
+      let txnId = document.getElementById("txnId").value.trim();
+      if (txnId.length < 8) {
+        alert("Enter valid UPI Transaction ID");
+        return;
+      }
+
+      // Show fake gateway
+      let box = document.getElementById("razorpayBox");
+      let text = document.getElementById("progressText");
+      let success = document.getElementById("successMsg");
+      box.style.display = "block";
+
+      // Fake timeline of Razorpay (3 step animation)
+      setTimeout(() => text.innerText = "Waiting for UPI app response…", 1200);
+      setTimeout(() => text.innerText = "Processing payment…", 2500);
+
+      setTimeout(() => {
+        text.style.display = "none";
+        success.style.display = "block";
+      }, 3800);
+
+      setTimeout(() => {
+        placeOrder(fullname, address, phone, "UPI", txnId);
+      }, 4500);
+    } 
+    else {
+      // COD → simple place order
+      placeOrder(fullname, address, phone, "Cash on Delivery", "N/A");
+    }
+  }
+
+  // FINAL ORDER SAVE
+  function placeOrder(fullname, address, phone, payment, txnId) {
+    let prev = JSON.parse(localStorage.getItem("currentorders")) || [];
+
+    prev.push({
+      user: fullname,
+      address: address,
+      phone: phone,
+      payment: payment,
+      txnId: txnId,
+      items: orderList,
+      date: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("currentorders", JSON.stringify(prev));
+    localStorage.removeItem("orderNow");
+
+    alert("Order Placed Successfully!");
+    window.location.href = "currentorders.html";
+  }
+</script>
+
+</body>
+</html>

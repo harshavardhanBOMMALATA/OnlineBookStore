@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Current Orders</title>
+
+  <style>
+    body { font-family: Arial; background:#f5f5f5; margin:0; }
+    .navbar {
+      background:#fff; padding:12px 24px; display:flex;
+      justify-content:space-between; align-items:center;
+      border-bottom:1px solid #ddd; position:relative;
+    }
+    .logo {color:#e84949; font-size:22px; font-weight:bold;}
+    .user-area {display:flex; align-items:center; gap:10px;}
+    .user-icon {width:34px; height:34px; border-radius:50%; cursor:pointer;}
+    .user-box {
+      position:absolute; top:56px; right:24px; background:white;
+      padding:14px; border-radius:10px; width:240px;
+      box-shadow:0 2px 12px rgba(0,0,0,0.2); display:none;
+    }
+    .logout-btn {
+      width:100%; padding:8px; background:#e84949; border:none;
+      color:white; margin-top:10px; border-radius:6px; cursor:pointer;
+    }
+    .orders-container {padding:24px; padding-bottom:100px;}
+    .order-box {
+      background:white; padding:16px; border-radius:10px;
+      margin-bottom:25px;
+      box-shadow:0 1px 8px rgba(0,0,0,0.12);
+    }
+    .order-title {font-size:18px; font-weight:bold; color:#e84949;}
+    .order-info {margin-top:10px; font-size:14px; color:#444; line-height:22px;}
+    .order-items {
+      background:#f9f9f9; padding:12px; border-radius:8px; margin-top:12px;
+    }
+    .order-item {padding:8px 0; border-bottom:1px solid #eee;}
+    .order-item:last-child {border-bottom:none;}
+    .total-price {margin-top:12px; font-size:16px; font-weight:bold; color:#e84949;}
+    .track-status {
+      margin-top:15px; padding:12px; background:#fff7f7;
+      border-left:4px solid #e84949; border-radius:8px;
+      font-size:14px; color:#333;
+    }
+    .track-status b {color:#e84949;}
+    .map-box {
+      margin-top:15px; width:100%; height:260px;
+      border-radius:8px; overflow:hidden; border:1px solid #ccc;
+    }
+    .footer {
+      position:fixed; bottom:0; left:0; width:100%;
+      background:white; padding:10px;
+      border-top:1px solid #ddd; text-align:center;
+      font-size:13px; z-index:1000;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Current Orders 📦</div>
+  <div class="user-area">
+    <span id="userNameText"></span>
+    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+         class="user-icon" onclick="toggleUserBox()">
+  </div>
+  <div id="userBox" class="user-box">
+    <p><strong>Name:</strong> <span id="uName"></span></p>
+    <p><strong>Email:</strong> <span id="uEmail"></span></p>
+    <p><strong>Address:</strong> <span id="uAddress"></span></p>
+    <p><strong>Phone:</strong> <span id="uPhone"></span></p>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </div>
+</header>
+
+<section class="orders-container">
+  <h2 style="color:#e84949;">Your Orders</h2>
+  <div id="ordersList"></div>
+</section>
+
+<footer class="footer">© 2025 Book Store. All rights reserved.</footer>
+
+<script>
+  // USER DETAILS
+  let logged = localStorage.getItem("loggedIn");
+  let user = JSON.parse(localStorage.getItem("user"));
+  if (!logged || !user) window.location.href="login.html";
+
+  document.getElementById("userNameText").innerText = user.username;
+  document.getElementById("uName").innerText = user.username;
+  document.getElementById("uEmail").innerText = user.email;
+  document.getElementById("uAddress").innerText = user.address;
+  document.getElementById("uPhone").innerText = user.phone;
+
+  function toggleUserBox() {
+    let box=document.getElementById("userBox");
+    box.style.display = box.style.display==="block" ? "none" : "block";
+  }
+  function logout(){
+    localStorage.removeItem("loggedIn");
+    window.location.href="login.html";
+  }
+
+  // LOAD ORDERS
+  let currentOrders = JSON.parse(localStorage.getItem("currentorders")) || [];
+  let completedOrders = JSON.parse(localStorage.getItem("completedorders")) || [];
+
+  let ordersList = document.getElementById("ordersList");
+
+  // RANDOM tracking statuses
+  const statuses = [
+    "Order Placed",
+    "Packed",
+    "Shipped",
+    "Reached Local Hub",
+    "Out for Delivery",
+    "Delivered Successfully"
+  ];
+
+  const warehouses = [
+    "Hyderabad Warehouse",
+    "Pune Warehouse",
+    "Mumbai Warehouse",
+    "Chennai Warehouse",
+    "Bengaluru Warehouse"
+  ];
+
+  let remainingOrders = [];
+
+  currentOrders.forEach((order, index) => {
+
+    // RANDOM STATUS FOR EACH ORDER
+    let status = statuses[Math.floor(Math.random()*statuses.length)];
+    let warehouse = warehouses[Math.floor(Math.random()*warehouses.length)];
+
+    // If delivered → move to completed orders list
+    if (status === "Delivered Successfully") {
+      completedOrders.push(order);
+      return; // skip showing it here
+    }
+
+    // Otherwise keep it as active order
+    remainingOrders.push(order);
+
+    // Random map location
+    let lat = 17.0 + Math.random()*1;
+    let lng = 78.0 + Math.random()*1;
+
+    // Calculate total price
+    let totalPrice = order.items.reduce((sum,b)=>sum+Number(b.price),0);
+
+    // Build items HTML
+    let itemsHTML = order.items.map(b => `
+      <div class="order-item">
+        <strong>${b.title}</strong> — ₹${b.price}<br>
+        <span style="font-size:13px;color:#555;">By ${b.author}</span>
+      </div>
+    `).join("");
+
+    let box = document.createElement("div");
+    box.className = "order-box";
+
+    box.innerHTML = `
+      <div class="order-title">Order #${index + 1}</div>
+
+      <div class="order-info">
+        <strong>Name:</strong> ${order.user}<br>
+        <strong>Address:</strong> ${order.address}<br>
+        <strong>Phone:</strong> ${order.phone}<br>
+        <strong>Payment:</strong> ${order.payment}<br>
+        <strong>Date:</strong> ${order.date}
+      </div>
+
+      <div class="order-items">
+        ${itemsHTML}
+        <div class="total-price">Total Price: ₹${totalPrice}</div>
+      </div>
+
+      <div class="track-status">
+        <b>Status:</b> ${status}<br>
+        <b>Start:</b> ${warehouse}<br>
+        <b>Destination:</b> ${order.address}
+      </div>
+
+      <div class="map-box">
+        <iframe width="100%" height="100%" style="border:0"
+          src="https://maps.google.com/maps?q=${lat},${lng}&z=14&output=embed">
+        </iframe>
+      </div>
+    `;
+
+    ordersList.appendChild(box);
+  });
+
+  // SAVE UPDATED LISTS
+  localStorage.setItem("currentorders", JSON.stringify(remainingOrders));
+  localStorage.setItem("completedorders", JSON.stringify(completedOrders));
+
+  if (remainingOrders.length === 0) {
+    ordersList.innerHTML = "<p>No current orders.</p>";
+  }
+</script>
+
+
+</body>
+</html>

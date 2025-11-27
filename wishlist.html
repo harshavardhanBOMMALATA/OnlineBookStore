@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wishlist</title>
+  <link rel="stylesheet" href="wishlist.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo">Wishlist ❤️</div>
+
+    <div class="user-area">
+      <span id="userNameText"></span>
+      <img 
+        src="https://cdn-icons-png.flaticon.com/512/847/847969.png" 
+        class="user-icon"
+        onclick="toggleUserBox()">
+    </div>
+
+    <!-- USER DROPDOWN -->
+    <div id="userBox" class="user-box">
+      <p><strong>Name:</strong> <span id="uName"></span></p>
+      <p><strong>Email:</strong> <span id="uEmail"></span></p>
+      <p><strong>Address:</strong> <span id="uAddress"></span></p>
+      <p><strong>Phone:</strong> <span id="uPhone"></span></p>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- WISHLIST SECTION -->
+  <section class="wishlist-box">
+    <h2>Your Wishlist</h2>
+    <div class="wishlist-actions">
+  <button class="order-all-btn" onclick="orderAll()">Order All</button>
+  <button class="order-selected-btn" onclick="orderSelected()">Order Selected</button>
+</div>
+
+    <div id="wishlistContainer" class="book-grid"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" style="/* FIXED FOOTER */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  border-top: 1px solid #ddd;
+  color: #555;
+  z-index: 100;
+}
+">
+    <p>© 2025 Book Store. All rights reserved.</p>
+  </footer>
+
+  <script src="wishlist.js"></script>
+</body>
+</html>
