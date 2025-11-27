@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+    }
+
+    /* NAVBAR (same style as home) */
+    .navbar {
+      background: #ffffff;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
+
+    .left-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #e84949;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .user-box {
+      position: absolute;
+      top: 56px;
+      right: 24px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 14px;
+      width: 230px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      display: none;
+      font-size: 14px;
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      background: #e84949;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* DETAILS LAYOUT */
+    .details-container {
+      max-width: 1000px;
+      margin: 20px auto 80px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 1px 10px rgba(0,0,0,0.12);
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .details-image {
+      flex: 0 0 280px;
+    }
+
+    .details-image img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .details-info {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .book-title-big {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .book-author {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .book-meta {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .book-price-big {
+      margin-top: 12px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #e84949;
+    }
+
+    .book-copies {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .book-desc-big {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .section-heading {
+      margin-top: 16px;
+      font-weight: bold;
+      font-size: 14px;
+      color: #222;
+    }
+
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: #e84949;
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: #e84949;
+      border: 1px solid #e84949;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: #ffffff;
+      border-top: 1px solid #ddd;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 13px;
+      color: #555;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="left-nav">
+      <div class="logo">Book Store</div>
+    </div>
+
+    <div class="user-area">
+      <span id="userNameText"></span>
+      <img 
+        src="https://cdn-icons-png.flaticon.com/512/847/847969.png" 
+        class="user-icon"
+        onclick="toggleUserBox()">
+    </div>
+
+    <div id="userBox" class="user-box">
+      <p><strong>Name:</strong> <span id="uName"></span></p>
+      <p><strong>Email:</strong> <span id="uEmail"></span></p>
+      <p><strong>Address:</strong> <span id="uAddress"></span></p>
+      <p><strong>Phone:</strong> <span id="uPhone"></span></p>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- DETAILS -->
+  <section id="details" class="details-container">
+    <!-- Filled by JS -->
+  </section>
+
+  <footer class="footer">
+    © 2025 Book Store. All rights reserved.
+  </footer>
+
+  <script>
+    // -------- USER AUTH ----------
+    let logged = localStorage.getItem("loggedIn");
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    if (!logged || !user) {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("userNameText").innerText = user.username;
+      document.getElementById("uName").innerText = user.username;
+      document.getElementById("uEmail").innerText = user.email;
+      document.getElementById("uAddress").innerText = user.address;
+      document.getElementById("uPhone").innerText = user.phone;
+    }
+
+    function toggleUserBox() {
+      const box = document.getElementById("userBox");
+      box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "login.html";
+    }
+
+    // -------- LOAD SELECTED BOOK ----------
+    let book = JSON.parse(localStorage.getItem("selectedBook"));
+    if (!book) {
+      // if no book selected, go back home
+      window.location.href = "home.html";
+    }
+
+    const detailsBox = document.getElementById("details");
+
+    // Some extra long text using the same description so it looks bigger
+    const longDesc = `
+      ${book.description}<br><br>
+      This edition by <b>${book.publication || "Unknown Publisher"}</b> is one of the most popular among readers.
+      It is widely appreciated for its engaging storytelling and strong character development.
+      Whether you are a beginner or a regular reader, this book is a great addition to your collection.
+    `;
+
+    detailsBox.innerHTML = `
+      <div class="details-image">
+        <img src="${book.image}" alt="${book.title}">
+      </div>
+      <div class="details-info">
+        <div class="book-title-big">${book.title}</div>
+        <div class="book-author">By ${book.author}</div>
+        <div class="book-meta">
+          Genre: ${book.genre}<br>
+          Publication: ${book.publication} &nbsp;|&nbsp; Year: ${book.year}
+        </div>
+        <div class="book-price-big">₹${book.price}</div>
+        <div class="book-copies">Available copies: ${book.copies}</div>
+
+        <div class="section-heading">About this book</div>
+        <div class="book-desc-big">
+          ${longDesc}
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" onclick="addToWishlistFromDetails()">Add to Wishlist</button>
+          <button class="btn btn-primary" onclick="orderNowFromDetails()">Order Now</button>
+          <button class="btn btn-outline" onclick="goBack()">Back to Home</button>
+        </div>
+      </div>
+    `;
+
+    // -------- WISHLIST FROM DETAILS ----------
+    function addToWishlistFromDetails() {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const exists = wishlist.find(b => b.id === book.id);
+      if (exists) {
+        alert("Already in wishlist");
+        return;
+      }
+      wishlist.push(book);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      alert("Added to wishlist!");
+    }
+
+    // -------- ORDER NOW FROM DETAILS ----------
+    function orderNowFromDetails() {
+      // re-use your existing placeorder.html flow
+      localStorage.setItem("orderNow", JSON.stringify([book]));
+      window.location.href = "placeorder.html";
+    }
+
+    function goBack() {
+      window.location.href = "home.html";
+    }
+  </script>
+
+</body>
+</html>
