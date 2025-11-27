@@ -60,7 +60,7 @@ let allBooks = [
     year: 2012,
     publication: "Dutton Books",
     copies: 8,
-    image: "https://m.media-amazon.com/images/I/71ZL1N1F2NL._SL1500_.jpg"
+    image: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/459EF8E90B72194883DBDAEC0C4EA6179185D57DE0947832F52288DC09F30329/scale?width=1200&amp;aspectRatio=1.78&amp;format=webp"
   },
   {
     id: 3,
@@ -108,7 +108,7 @@ let allBooks = [
     year: 1999,
     publication: "Shueisha",
     copies: 18,
-    image: "https://m.media-amazon.com/images/I/51r5aMK5l1L.jpg"
+    image: "https://cdn.pixabay.com/photo/2023/09/04/07/39/ai-generated-8232206_1280.png"
   },
   {
     id: 7,
@@ -132,7 +132,7 @@ let allBooks = [
     year: 2015,
     publication: "Riverhead Books",
     copies: 7,
-    image: "https://m.media-amazon.com/images/I/81n4T9u2wLL._SL1500_.jpg"
+    image: "https://i5.walmartimages.com/asr/a6513e10-23f9-4f18-9100-554fddcaa750_1.edd1069e46c70d49a412c4ec82f6dd21.jpeg"
   },
   {
     id: 9,
@@ -156,7 +156,8 @@ let allBooks = [
     year: 1960,
     publication: "J.B. Lippincott & Co.",
     copies: 9,
-    image: "https://m.media-amazon.com/images/I/81OdwZGf1PL._SL1500_.jpg"
+    image: "https://cdn2.penguin.com.au/covers/original/9781785151552.jpg"
+
   },
   {
     id: 11,
@@ -168,7 +169,7 @@ let allBooks = [
     year: 1949,
     publication: "Secker & Warburg",
     copies: 11,
-    image: "https://m.media-amazon.com/images/I/71kxa1-0zfL._SL1500_.jpg"
+    image: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/b468d093312907.5e6139cf2ab03.png"
   },
   {
     id: 12,
@@ -204,7 +205,7 @@ let allBooks = [
     year: 2016,
     publication: "Grand Central Publishing",
     copies: 8,
-    image: "https://m.media-amazon.com/images/I/81p7L2qjTRL._SL1500_.jpg"
+    image: "https://m.media-amazon.com/images/I/71din4TLubL.jpg"
   },
   {
     id: 15,
@@ -240,7 +241,7 @@ let allBooks = [
     year: 1892,
     publication: "Wordsworth Editions",
     copies: 5,
-    image: "https://m.media-amazon.com/images/I/71qRZqQpKEL._SL1500_.jpg"
+    image: "https://cdnb.artstation.com/p/assets/images/images/058/706/813/large/george-designes-sherlock-holmes-poster.jpg?1674771455"
   },
   {
     id: 18,
@@ -300,8 +301,7 @@ let allBooks = [
     year: 1997,
     publication: "Shueisha",
     copies: 14,
-    image: "https://m.media-amazon.com/images/I/51Fen3bAJuL.jpg"
-  },
+    image: "https://www.comingsoon.net/wp-content/uploads/sites/3/2023/09/One-Piece-Chapter-1094-Release-Date.jpg?resize=1200,630" },
   {
     id: 23,
     title: "Demon Slayer Vol. 1",
@@ -312,8 +312,7 @@ let allBooks = [
     year: 2016,
     publication: "Shueisha",
     copies: 9,
-    image: "https://m.media-amazon.com/images/I/51tW-UJVYcL.jpg"
-  },
+    image: "https://occ-0-3011-114.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABc_IAP39hj-kZ8BSec3IQ3zMRFLQvuxISsTH0WbVmISwOd7_gNPUA19gEwg5EkWJFdPrVyeOrDxhCFi08qjHYzABVNdsJHmlQjpw.jpg?r=920" },
   {
     id: 24,
     title: "The Shining",
@@ -348,7 +347,7 @@ let allBooks = [
     year: 2018,
     publication: "Grand Central Publishing",
     copies: 7,
-    image: "https://m.media-amazon.com/images/I/71kqQykcxdL._SL1500_.jpg"
+    image: "https://www.selectedreads.com/wp-content/uploads/2024/01/1-64.png"
   },
   {
     id: 27,
@@ -372,7 +371,7 @@ let allBooks = [
     year: 2014,
     publication: "O'Reilly Media",
     copies: 6,
-    image: "https://m.media-amazon.com/images/I/71b4K7C8ULS._SL1500_.jpg"
+    image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1585414018i/52764087.jpg"
   },
   {
     id: 29,
@@ -396,7 +395,7 @@ let allBooks = [
     year: 2020,
     publication: "Canongate Books",
     copies: 6,
-    image: "https://m.media-amazon.com/images/I/81Dov0X8RWL._SL1500_.jpg"
+    image: "https://beffshuff.com/wp-content/uploads/2021/05/DSC_1104-1440x2160.jpg"
   }
 ];
 
@@ -427,22 +426,26 @@ function renderBooks() {
   pageBooks.forEach(book => {
     const card = document.createElement("div");
     card.className = "book-card";
+
     card.innerHTML = `
-      <img src="${book.image}" alt="${book.title}">
-      <div class="book-title">${book.title}</div>
-      <div class="book-author">By ${book.author}</div>
-      <div class="book-desc">${book.description}</div>
-      <div class="book-meta">
-        Genre: ${book.genre} &nbsp;|&nbsp;
-        Year: ${book.year} &nbsp;|&nbsp;
-        ${book.publication}
+      <div class="book-main" onclick="openBookDetails(${book.id})">
+        <img src="${book.image}" alt="${book.title}">
+        <div class="book-title">${book.title}</div>
+        <div class="book-author">By ${book.author}</div>
+        <div class="book-desc">${book.description}</div>
+        <div class="book-meta">
+          Genre: ${book.genre} &nbsp;|&nbsp;
+          Year: ${book.year} &nbsp;|&nbsp;
+          ${book.publication}
+        </div>
+        <div class="book-copies">Available copies: ${book.copies}</div>
+        <div class="book-price">₹${book.price}</div>
       </div>
-      <div class="book-copies">Available copies: ${book.copies}</div>
-      <div class="book-price">₹${book.price}</div>
-      <button class="wishlist-btn" onclick="addToWishlist(${book.id})">
+      <button class="wishlist-btn" onclick="event.stopPropagation(); addToWishlist(${book.id})">
         Add to Wishlist
       </button>
     `;
+
     container.appendChild(card);
   });
 
@@ -474,6 +477,19 @@ function filterBooks(genre) {
   renderBooks();
 }
 
+function openBookDetails(bookId) {
+  const book = allBooks.find(b => b.id === bookId);
+  if (!book) return;
+
+  // Save this book to localStorage
+  localStorage.setItem("selectedBook", JSON.stringify(book));
+
+  // Go to details page
+  window.location.href = "description.html";
+}
+
+
+
 // ---------------- WISHLIST (localStorage) ----------------
 function addToWishlist(bookId) {
   const book = allBooks.find(b => b.id === bookId);
@@ -492,4 +508,3 @@ function addToWishlist(bookId) {
 
 // ---------------- INIT ----------------
 renderBooks();
-
